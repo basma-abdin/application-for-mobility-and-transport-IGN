@@ -1,24 +1,27 @@
-
- var Lat=0; var Long=0; var process=0; var processName;
- var map, maxZoom=0; var lyrMaps;var forsearche;
- var center;
+// Dans cette page il ya la confugeration de la carte , la connection àu service géoportail(Gp) , la gestion de menu
+// Déclaration des variables //
+var Lat=0;
+var Long=0;
+var process=0;
+var processName;
+var map, maxZoom=0;
+var lyrMaps;
+var forsearche;
+var center;
 var watchID;
 var markers; var userLoc = null;
+
 var userIcon = L.icon({
   iconUrl: 'library/leaflet/images/parking.png',
   iconSize: [29, 24],
   iconAnchor: [9, 21],
   popupAnchor: [0, -14]
   });
-// var userPoint = L.marker([Lat,Long],{ draggable : true});
 
-// var userPoint = L.marker([Lat,Long],{icon: userIcon , draggable : true});
-// var point = L.circleMarker([Lat,Long]).setRadius(5);
-// var userPoint = L.userMarker(location.latlng, {pulsing:true});
 var userPoint = L.userMarker([0,0], {pulsing:true});
+////////////////////////////////
+
 userPoint.setAccuracy(10);
-
-
 userPoint.once("move",function () {
   map.flyTo(userPoint.getLatLng());
 })
@@ -30,39 +33,18 @@ function onBackKeyDown() {
   history.back();
   return false;
 }
-// function getPosition() {
-//     var options = {
-//        enableHighAccuracy: true,
-//        maximumAge: 3600000
-//     }
-//       watchID = navigator.geolocation.getCurrentPosition(onSuccess, onError, options);
-//       function onSuccess(position) {
-//         Lat= position.coords.latitude;
-//         Long= position.coords.longitude;
-//         console.log(" getPosition    "+position.coords.latitude+" , "+position.coords.longitude);
-//         userLoc = L.latLng(position.coords.latitude,position.coords.longitude);
-//         center = L.latLng(position.coords.latitude,position.coords.longitude);
-//         userPoint.setLatLng(userLoc);
-//         map.flyTo(userPoint.getLatLng());
-//       }
-//       function onError(error) {
-//         alert("erreur de localisation");
-//       }
-// }
- function getPosition() {
+
+function getPosition() {
     var options = {
        enableHighAccuracy: true,
        maximumAge: 3600000
     }
     cordova.plugins.diagnostic.isGpsLocationEnabled(function(enabled){
-
-    // alert("GPS location is " + (enabled ? "enabled" : "disabled"));
     if(enabled){
       watchID = navigator.geolocation.getCurrentPosition(onSuccess, onError, options);
       function onSuccess(position) {
         Lat= position.coords.latitude;
         Long= position.coords.longitude;
-        console.log(" getPosition    "+position.coords.latitude+" , "+position.coords.longitude);
         userLoc = L.latLng(position.coords.latitude,position.coords.longitude);
         center = L.latLng(position.coords.latitude,position.coords.longitude);
         userPoint.setLatLng(userLoc);
@@ -74,9 +56,9 @@ function onBackKeyDown() {
 
     }else {
       navigator.notification.confirm(
-        'Allumez la localisation!', // message
-        onConfirm,            // callback to invoke with index of button pressed
-        'localisation'    // buttonLabels
+        'Allumez la localisation!',
+        onConfirm,
+        'localisation'
       );
     }
 }, function(error){
@@ -84,16 +66,14 @@ function onBackKeyDown() {
 });
 
   }
-  function onConfirm(button) {
-     // alert('You selected button ' + button);
+
+function onConfirm(button) {
     if(button == 1)
     {
       cordova.plugins.diagnostic.switchToLocationSettings();
       getPosition();
     }
-
-  }
-
+}
 
 function watchPos(){
 
@@ -101,50 +81,13 @@ function watchPos(){
        Lat=e.coords.latitude;Long=e.coords.longitude;
         center = L.latLng(e.coords.latitude, e.coords.longitude);
         userLoc = L.latLng(e.coords.latitude, e.coords.longitude);
-        console.log(" watchPosition    "+e.coords.latitude+" , "+e.coords.longitude);
         userPoint.setLatLng(center);
    },function(error){
-
-     // alert('code: '    + error.code    + '\n' + 'message: ' + error.message + '\n');
  },
    { timeout: 100000 }
  );
 }
-///////////////Network ///////////////////////////
-// if(!checkConnection()){
-//   navigator.notification.confirm(
-//     'Allumez la connection!', // message
-//     opennet,            // callback to invoke with index of button pressed
-//     'Connection reseaux'    // buttonLabels
-//   );
-// }
-// function checkConnection() {
-//     var networkState = navigator.connection.type;
-//
-//     var states = {};
-//     states[Connection.UNKNOWN]  = 'ok';
-//     states[Connection.ETHERNET] = 'ok';
-//     states[Connection.WIFI]     = 'ok';
-//     states[Connection.CELL_2G]  = 'ok';
-//     states[Connection.CELL_3G]  = 'ok';
-//     states[Connection.CELL_4G]  = 'ok';
-//     states[Connection.CELL]     = 'ok';
-//     states[Connection.NONE]     = 'non';
-//     if(states[networkState] == 'non') return false;
-//     return true;
-//     // alert('Connection type: ' + states[networkState]);
-// }
-//
-// function opennet(button) {
-//    // alert('You selected button ' + button);
-//   if(button == 1)
-//   {
-//     alert("here")
-//     cordova.plugins.diagnostic.switchToWirelessSettings();
-//
-//   }
-//
-// }
+
 ///////////////////////////////////////////////////////
   Gp.Services.getConfig({
       apiKey : "rhr7qw2f1nz7irqkk63pxxrk",
@@ -156,7 +99,7 @@ function watchPos(){
         if (Lat != 0 || Long != 0 ){
           LatCentre=Lat;
           LongCentre=Long;
-        } //>>>>>>>>>>>>>>>>>>>>>>>>>>>> TO DO Toast saying that loc undefinded
+        }
      map = L.map('map', {
       center: [LatCentre,LongCentre],
       zoom: 14,
@@ -181,7 +124,7 @@ function watchPos(){
     map.addLayer(forsearche) ;
 
 
-///////////////////////////
+// RELOCATE BUTTON //
 var customControl =  L.Control.extend({
 
   options: {
@@ -203,22 +146,20 @@ var customControl =  L.Control.extend({
   }
 });
 map.addControl(new customControl());
-///////////
+/////////////
+
        var searchCtrl = L.geoportalControl.SearchEngine({});
 
       getPosition();
       userPoint.addTo(map);
-
-        map.on("zoomend",handleVisibility);
         map.on("move",hideBtn);
   }
 
 watchPos();
 
-
-  function locateUser(){
-    getPosition();
-  }
+function locateUser(){
+  getPosition();
+}
 
 function stopWatchPos(){
   navigator.geolocation.clearWatch(watchID);
@@ -256,9 +197,6 @@ function handleProcess(choice){
       map.removeLayer(parkingPoints);
       map.removeLayer(stationsPoints);
       resetMarker();
-
-      // document.getElementById("tabletimeDiv").style.display = "none";
-        // $("#formV").show('fade');
   }
   if(choice == "route"){
     process = 4;
@@ -281,13 +219,6 @@ function handleProcess(choice){
     map.removeLayer(bikePoints);
   }
   handleView(process);
-  console.log(choice);
-
-}
-
-
-function handleVisibility() {
-    console.log("handleVisibility "+map.getZoom());
 }
 
 function locErr() {
@@ -324,7 +255,6 @@ $("#home").on('click',function () {
 ////////////////////////////// //
 
 function hideBtn() {
-//  $("#goBtn").hide();
    $("#goBtn").prop("disabled",true);
 }
 ///////////////////////////////////
@@ -372,17 +302,13 @@ function handleView(p) {
     $("#formV").hide();  //  route
       break;
     case 6:
-    // $("#map").css('height','70vh');
     $("#volet").css("display", "initial");
     resetTransportView();
-
     $("#formV").hide();  //  route
       break;
     default:
      $("#volet").css("display", "none");
       $("#formV").hide();
-    // $("#map").css('height','80vh');
-
   }
 
 }
@@ -416,10 +342,8 @@ function closeVlolet() {
 function isOpenVolet() {
  var test = $( "#openCloseBtn" ).attr( "href" );
  if(test == "#volet") {
-   console.log("open");
    return true;
  }else {
-   console.log("close");
    return false;
  }
 }

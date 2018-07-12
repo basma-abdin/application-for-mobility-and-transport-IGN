@@ -322,8 +322,8 @@ ul.sidebar-menu li ul.sub li a {
 }
 
 ul.sidebar-menu li ul.sub li a:hover {
-	color: white;
-	background: transparent;
+	color: #68dff0;
+	background:transparent;
 }
 
 ul.sidebar-menu li ul.sub li.active a {
@@ -365,8 +365,8 @@ ul.sidebar-menu li a{
     transition: all 0.3s ease;
 }
 
-ul.sidebar-menu li a.active, ul.sidebar-menu li a:hover, ul.sidebar-menu li a:focus {
-    background: #68dff0;
+ul.sidebar-menu, ul.sidebar-menu li a:hover, ul.sidebar-menu li a:focus {
+    background: transparent;
     color: #fff;
     display: block;
 
@@ -376,7 +376,17 @@ ul.sidebar-menu li a.active, ul.sidebar-menu li a:hover, ul.sidebar-menu li a:fo
     -ms-transition: all 0.3s ease;
     transition: all 0.3s ease;
 }
+ul.sidebar-menu li a.active{
+  background: #68dff0;
+  color: #fff;
+  display: block;
 
+  -webkit-transition: all 0.3s ease;
+  -moz-transition: all 0.3s ease;
+  -o-transition: all 0.3s ease;
+  -ms-transition: all 0.3s ease;
+  transition: all 0.3s ease;
+}
 
 ul.sidebar-menu li a i {
     font-size: 15px;

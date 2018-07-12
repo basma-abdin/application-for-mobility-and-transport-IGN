@@ -1,5 +1,5 @@
 #Internal package file, do not edit.
-#Thu Jul 12 13:20:00 CEST 2018
+#Thu Jul 12 15:49:57 CEST 2018
 100.set=ASSET
 57.file=/home/basma/cordovaApp/application/platforms/android/app/build/intermediates/res/debug/resources-debug.ap_/res/drawable-mdpi-v4/abc_btn_radio_to_on_mtrl_000.png
 145.file=/home/basma/cordovaApp/application/platforms/android/app/build/intermediates/assets/debug/www/assets/js/jquery.dcjqaccordion.2.7.js
