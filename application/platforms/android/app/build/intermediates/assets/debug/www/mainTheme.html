@@ -1,0 +1,247 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="">
+  <meta name="author" content="Dashboard">
+  <meta name="keyword" content="Dashboard, Bootstrap, Admin, Template, Theme, Responsive, Fluid, Retina">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+  <title>IGN MOBILE</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="assets/css/bootstrap.css" rel="stylesheet">
+<!-- FONTAWOSEM LIB -->
+  <link href="assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
+  <link rel="stylesheet" type="text/css" href="assets/lineicons/style.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+<!-- LEAFLET & LEAFLET PLUGIN -->
+  <link rel="stylesheet"  href="library/Gpleaflet/GpPluginLeaflet.css">
+  <link rel="stylesheet"  href="library/leaflet/leaflet.css">
+  <link rel="stylesheet"  href="library/PruneCluster/LeafletStyleSheet.css">
+  <link rel="stylesheet"  href="library/userMarker/leaflet.usermarker.css">
+<!-- JQUERY MOBILE -->
+  <link rel="stylesheet"  href="library/jqm/jquery.mobile-1.4.5.css">
+  <link rel="stylesheet"  href="css/stop.css">
+<!-- BOOTSTRAP -->
+  <link rel="stylesheet"  href="css/bootstrap.css">
+  <!-- CUSTOM STYLE -->
+  <link href="assets/css/style.css" rel="stylesheet">
+  <link href="assets/css/style-responsive.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/custom.css">
+
+</head>
+<body>
+<!-- HOME PAGE -->
+ <div data-role="page" id="homePage" style="height: 100vh">
+   <!-- SIDEBAR MENU -->
+     <div data-role="panel" id="sidebar" data-position="left" data-display="overlay" class="nav-collapse ">
+       <ul class="sidebar-menu" id="nav-accordion">
+           <p class="centered"><a href="profile.html"><img src="assets/img/lasdim.jpeg" class="img-circle" width="60"></a></p>
+           <h5 class="centered">BASMA ABDIN</h5>
+
+           <li class="mt">
+               <a class="active" href="#homePage" id="home">
+                   <i class="far fa-map"></i>
+                   <span>MAP</span>
+               </a>
+           </li>
+
+           <li class="sub-menu">
+               <a href="javascript:;" >
+                   <i class="fas fa-exchange-alt"></i>
+                   <span>ITINERAIRE</span>
+               </a>
+               <ul class="sub">
+                   <li><a  href="routePage.html" id="routeChoice">Vers</a></li>
+               </ul>
+           </li>
+
+           <li class="sub-menu">
+               <a href="javascript:;" >
+                   <i class="fas fa-subway"></i>
+                   <span>TRANSPORT</span>
+               </a>
+               <ul class="sub">
+                   <li><a id="parkingCoice">PARKING</a></li>
+                   <li><a id="veloCoice">VELO</a></li>
+                   <li><a id="transportCoice">TRANSPORT</a></li>
+               </ul>
+           </li>
+       </ul>
+     </div>
+    <!-- /SIDEBAR MENU -->
+    <!-- PAGE HEADER -->
+       <div  class="header black-bg ">
+       <div class="sidebar-toggle-box">
+         <a href="#sidebar" data-rel="open" class="fa fa-bars tooltips"></a>
+       </div>
+     <a href="#" class="logo"><b>IGN</b></a>
+     <div class="top-menu">
+       <ul class="nav pull-right top-menu">
+             <li><a class="logout" href="login.html">Se déconnecter</a></li>
+       </ul>
+     </div>
+    </div>
+    <!-- /PAGE HEADER -->
+    <!-- PAGE CONTENT -->
+        <div id="main-content">
+          <h1>Application LaSDIM</h1>
+          <div id = "searchDiv">
+             <input list="adresse" type="search" id="location" onkeyup="suggest('location')" autocomplete="off" onchange="pinPoint()" >
+              <datalist id="adresse" >
+              </datalist>
+           </div>
+
+          <div class="collapse" id = "formV">
+              <a href="#" id="formVtext">Dans quelle ville vous cherchez ?</a>
+              <form class="collapse" id="formVchilde">
+                <label class="checkbox-inline"><input type="checkbox" value="Creteil" name="choix" >Créteil</label>
+                 <label class="checkbox-inline"><input type="checkbox" value="Cergy-Pontoise" name="choix">Cergy-Pontoise</label>
+               </form>
+          </div>
+
+            <div id="map"></div>
+            <div id="volet_clos">
+
+        	<div id="volet" style="display: none;" >
+                <a href="#volet" class="ouvrir btn btn-info" role="button" onclick="openVolet()" id="openCloseBtn">
+                <span class="glyphicon glyphicon-circle-arrow-up"></span> </a>
+                <div class="col-lg-3 ds" id="informationDiv" style="display: none;">
+                <div class="ds" style="display: none;" id="searchBtn">
+                  <a href="routePage.html" class="list-group-item list-group-item-success route-response" onclick="prepare()"> Y Aller </a>
+                </div>
+        <!-- <h3 id="titleDiv"></h3> -->
+
+          <div class="desc" id="routeDiv" style="display: none;">
+            <!-- Route Response -->
+            <div class="list-group">
+              <ul class="list-group">
+               <li class="list-group-item list-group-item-info"  id="routeInfo"> </li>
+             </ul id="ulRouteDiv">
+               <a href="datailsPage.html" class="list-group-item list-group-item-info route-response" >Détails</a>
+               <a href="#" class="list-group-item list-group-item-success route-response" id="goStopBtn"> Démarer </a>
+            </div>
+          </div>
+
+          <div class="desc" id ="bikeStation" style="display: none;">
+                  <div class="modal-header">
+                  <img src="css/img/bike.png" class="img-sz" id="bikeIcon">
+                    <h3 id= "bikeName"></h3>
+                  </div>
+                  <div class="modal-body" id="bikeInfo"></div>
+                  <a href="routePage.html" class="list-group-item list-group-item-success route-response" onclick="prepare()"> Y Aller </a>
+          </div>
+
+          <div class="desc" id ="parking" style="display: none;">
+                  <div class="modal-header">
+                  <img src="css/img/Parking.png" class="img-sz">
+                  <img src="css/img/carElectrique.png" id="car" class="img-sz">
+                    <h3 id= "parkingName"></h3>
+                  </div>
+                  <div class="modal-body" id="parkInfo"></div>
+                    <a href="routePage.html" class="list-group-item list-group-item-success route-response" onclick="prepare()"> Y Aller </a>
+          </div>
+
+          <div class="desc" id = "tabletimeDiv" style="display: none;">
+            <h3  id="stationName" style="display: none;"></h3>
+            <div class="alert alert-secondary collapse" id="error">
+              <i class="fas fa-exclamation-circle"></i>une erreur est suvenue
+            </div>
+
+            <div class="transport-table"id="tableTimeDiv" style="display: none;" >
+              <table class="table table-hover" id="timeTable" >
+                <tbody >
+                </tbody>
+              </table>
+          </div>
+          <a href="routePage.html" class="list-group-item list-group-item-success route-response" onclick="prepare()" id="transportBtn" style="display: none;" > Y Aller </a>
+        </div>
+      </div>
+
+<!--  -->      </div>
+                </div>
+
+        </div><!-- /content -->
+
+</div>
+<!-- /HOME PAGE  -->
+<!-- TRANSPORT HOURS TABLE PAGE  -->
+<div data-role="page" id ="hoursPage" data-add-back-btn = "true">
+  <div  class="header black-bg ">
+  <div class="sidebar-toggle-box">
+    <a href="#homePage" data-rel="open" class="fa fa-arrow-left"></a>
+  </div>
+<a href="#" class="logo"><b>IGN</b></a>
+</div>
+      <div id="main-content">
+          <p>Hello world</p>
+          <p>Hello world</p>
+          <ul data-role="listview" data-inset="true" data-filter="false" >
+            <li>
+              <img src="" id = "img-time"></img>
+            <form class= "formA" >
+             <input type="radio" name="d" value="" id = "direction1" > <label for="direction1" id="labelDir1"class="lable-back">DIRECTION</label>
+             <input type="radio" name="d" value=""  id = "direction2"> <label for="direction2" id="labelDir2" class="lable-back">DIRECTION</label>
+            </form>
+           </li>
+        </ul>
+        <div class="hours-table">
+          <table class="table table-hover" id="hoursTable" >
+            <tbody >
+            </tbody>
+          </table>
+      </div>
+  </div>
+</div>
+<!-- /PAGE -->
+
+<!-- CUSTOM ALERT -->
+<div class="modal" tabindex="-1" role="dialog" data-rel="dialog" id="modalAlert">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <p>êtes-vous sûr ?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">non</button>
+        <button type="button" class="btn btn-success" onclick="stopNav()">oui</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- END ALERT -->
+
+
+
+
+<!-- JQUERY lib -->
+<script src="assets/js/jquery.js"></script>
+<script src="assets/js/jquery-1.8.3.min.js"></script>
+<script src="library/jqm/jquery.mobile-1.4.5.js"></script>
+<script type="text/javascript" src="assets/js/jquery.backstretch.min.js"></script>
+
+<!-- LEAFLET & LEAFLET PLUGIN -->
+<script src="library/leaflet/leaflet.js"></script>
+<script src="library/userMarker/leaflet.usermarker.js"></script>
+<script src="library/PruneCluster/PruneCluster.js"></script>
+<script src="library/Gpleaflet/GpPluginLeaflet.js" data-key="rhr7qw2f1nz7irqkk63pxxrk" ></script>
+<!-- BOOTSTRAP -->
+<script src="assets/js/bootstrap.min.js"></script>
+<!-- CORDOVA  -->
+<script type="text/javascript" charset="utf-8" src="cordova.js"></script>
+<!-- FUNCTIONS -->
+<script type="text/javascript" src="js/custom.js"></script>
+<script type="text/javascript" src="js/search.js"></script>
+<script type="text/javascript" src="js/parking.js"></script>
+<script type="text/javascript" src="js/transport.js"></script>
+<script type="text/javascript" src="js/velo.js"></script>
+<script type="text/javascript" src="js/route.js"></script>
+<script type="text/javascript" src="js/index.js"></script>
+
+<script>
+    $.backstretch("assets/img/login-bg.jpg", {speed: 500});
+</script>
+
+</body>
+</html>
